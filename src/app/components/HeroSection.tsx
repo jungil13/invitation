@@ -26,8 +26,8 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
 
   {/* Mobile */}
   <div
-    className="block md:hidden absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: `url(${glizPortrait})` }}
+    className="block md:hidden absolute inset-0 bg-cover bg-[center_top_10%]"
+    style={{ backgroundImage: `url(${glizPortrait})`, opacity: 0.8 }}
   />
 </div>
       <FloatingPetals />
@@ -42,13 +42,13 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
         style={{ background: "radial-gradient(circle, #F9D4DC, transparent)" }}
       />
 
-      <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
+      <div className="relative z-20 text-center px-4 md:px-6 w-full max-w-4xl mx-auto py-10">
         {/* Pre-title */}
         <motion.p
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-sm tracking-[0.4em] uppercase mb-4"
+          className="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase mb-6 sm:mb-4"
           style={{ color: "#D4AF37", fontFamily: "'Raleway', sans-serif", fontWeight: 300 }}
         >
           — You Are Invited —
@@ -59,12 +59,14 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.3 }}
+          className="px-2"
           style={{
             fontFamily: "'Great Vibes', cursive",
-            fontSize: "clamp(4rem, 12vw, 9rem)",
+            fontSize: "clamp(3.5rem, 15vw, 9rem)",
             color: "#ffffff",
             lineHeight: 1.1,
             textShadow: "0 2px 20px rgba(212, 175, 55, 0.4)",
+            paddingBottom: "0.5rem"
           }}
         >
           Glizlen Casquejo
@@ -75,17 +77,17 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.7 }}
-          className="mt-4 mb-8"
+          className="mt-6 mb-10 px-2"
         >
           <div
-            className="flex items-center justify-center gap-4 mb-3"
+            className="flex items-center justify-center gap-3 sm:gap-4 mb-4"
             style={{ color: "#F9D4DC" }}
           >
-            <span style={{ borderTop: "1px solid rgba(212,175,55,0.5)", width: "60px", display: "inline-block" }} />
+            <span className="hidden sm:inline-block w-[60px]" style={{ borderTop: "1px solid rgba(212,175,55,0.5)" }} />
             <span
               style={{
                 fontFamily: "'Raleway', sans-serif",
-                fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
+                fontSize: "clamp(0.8rem, 2.5vw, 1.1rem)",
                 letterSpacing: "0.2em",
                 fontWeight: 300,
               }}
@@ -95,7 +97,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
             <span
               style={{
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(2rem, 6vw, 3.5rem)",
+                fontSize: "clamp(1.75rem, 6vw, 3.5rem)",
                 color: "#D4AF37",
                 fontWeight: 700,
                 lineHeight: 1,
@@ -106,26 +108,28 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
             <span
               style={{
                 fontFamily: "'Raleway', sans-serif",
-                fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
+                fontSize: "clamp(0.8rem, 2.5vw, 1.1rem)",
                 letterSpacing: "0.2em",
                 fontWeight: 300,
               }}
             >
-              TODAY
+                TODAY
             </span>
-            <span style={{ borderTop: "1px solid rgba(212,175,55,0.5)", width: "60px", display: "inline-block" }} />
+            <span className="hidden sm:inline-block w-[60px]" style={{ borderTop: "1px solid rgba(212,175,55,0.5)" }} />
           </div>
 
           <p
+            className="px-4"
             style={{
               fontFamily: "'Raleway', sans-serif",
-              fontSize: "clamp(0.85rem, 2vw, 1rem)",
+              fontSize: "clamp(0.8rem, 2vw, 1rem)",
               color: "#F4A7B9",
               letterSpacing: "0.15em",
               fontWeight: 300,
+              lineHeight: 1.6,
             }}
           >
-            Saturday, the Eighth of August, Two Thousand Twenty-Six
+            Saturday, the Eighth of August, <br className="block sm:hidden" />Two Thousand Twenty-Six
           </p>
         </motion.div>
 
@@ -146,22 +150,24 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.1 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mb-10"
+          className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 mb-12"
           style={{ fontFamily: "'Raleway', sans-serif", color: "#ffffff" }}
         >
-          <div className="text-center">
-            <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase" }}>Time</p>
-            <p style={{ fontSize: "1rem", fontWeight: 300 }}>6:00 PM onwards</p>
+          <div className="text-center px-4 w-full sm:w-auto">
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Time</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>6:00 PM onwards</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
-          <div className="text-center">
-            <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase" }}>Venue</p>
-            <p style={{ fontSize: "1rem", fontWeight: 300 }}>1101 Victorio Pacaldo Sr. St, Cordova, 6017 Cebu</p>
+          <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
+          <div className="text-center px-4 w-full sm:w-auto">
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Venue</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.5 }}>1101 Victorio Pacaldo Sr. St,<br /> Cordova, 6017 Cebu</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
-          <div className="text-center">
-            <p style={{ fontSize: "0.7rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase" }}>Attire</p>
-            <p style={{ fontSize: "1rem", fontWeight: 300 }}>White/Yellow or Formal</p>
+          <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
+          <div className="text-center px-4 w-full sm:w-auto">
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Attire</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>White/Yellow<br className="block sm:hidden" /> or Formal</p>
           </div>
         </motion.div>
 
@@ -170,7 +176,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6 w-full px-4"
         >
           <button
             onClick={() => onScrollTo("gallery")}
