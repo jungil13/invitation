@@ -30,14 +30,14 @@ function scrollTo(id: string) {
 }
 
 export default function App() {
-  const [showAdmin, setShowAdmin] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("admin") === "true";
+    }
+    return false;
+  });
   const [activeSection, setActiveSection] = useState("home");
-
-  // Check URL for admin parameter
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("admin") === "true") setShowAdmin(true);
-  }, []);
 
   // Track active section for mobile nav highlight
   useEffect(() => {

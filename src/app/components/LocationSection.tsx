@@ -217,7 +217,7 @@ export function LocationSection() {
               fontWeight: 400,
             }}
           >
-            White or White/Yellow
+            Warm neutrals
           </p>
           {/* RSVP Form */}
           {submitted ? (

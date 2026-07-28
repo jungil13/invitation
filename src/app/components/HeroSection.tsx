@@ -168,7 +168,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
           <div className="text-center px-4 w-full sm:w-auto">
             <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Attire</p>
-            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>White/Yellow<br className="block sm:hidden" /> or Formal</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>Warm neutrals</p>
           </div>
         </motion.div>
 
