@@ -48,7 +48,7 @@ const DEFAULT_PHOTOS = [
     alt: "Woman celebrating with candles",
   },
   {
-    url: "https://scontent.fceb2-2.fna.fbcdn.net/v/t1.15752-9/756524079_909432488876676_8522515502887029083_n.png?stp=dst-png&cstp=mx1023x1537&ctp=s1023x1537&_nc_cat=100&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEqlxj9FmGYiqlaoarKU5xYzWkRZoar6ovNaRFmhqvqiyKgKi4NYBI7Dcot3jXyAogLdzdF4btBBcCj6Wb8cH6k&_nc_ohc=hz-c7coHWrMQ7kNvwE5Pn4k&_nc_oc=Adq_22OIivf8UYLgbsRyw1jhi3hg8Hz73OFbOnFMUT1HLBHHn07atie_8SZnBTmXsqM&_nc_zt=23&_nc_ht=scontent.fceb2-2.fna&_nc_ss=7b2a8&oh=03_Q7cD5wGk7FfxxBba5QwKaibcFcEYXOZ__MopM4339eTpSUlLCA&oe=6A8F86FA",
+    url: "https://scontent.fceb6-4.fna.fbcdn.net/v/t1.15752-9/756332665_1932837797702759_5172683130849371507_n.png?stp=dst-png&cstp=mx1024x1536&ctp=s1024x1536&_nc_cat=111&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeGhO7oXv9CTzy7XgnDX9It2z7FWjGVvrPXPsVaMZW-s9Rl8c64_iogepNgbOWl3V6g3vcIcV8dGyFEsXeUxIYAE&_nc_ohc=GVM7vWTrShsQ7kNvwGUp88P&_nc_oc=AdqyU1T-j3n55nPdwgfBSZ7c1oQjNOTPBVEhTzaFH1SfcWpUomwcFQWFk5N-KpGkVKc&_nc_zt=23&_nc_ht=scontent.fceb6-4.fna&_nc_ss=7b2a8&oh=03_Q7cD5wF3FDFCcJQVJEgiTwjKc53xZd2ZmiwNYJeEUjquRjVDrQ&oe=6A8FBAC6",
     alt: "Woman celebrating with candles",
   },
   {

@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import glizLandscape from "../../assets/images/gliz-landscape1.png";
 import glizPortrait from "../../assets/images/gliz-portrait.png";
 import { FloatingPetals } from "./FloatingPetals";
+import { RsvpModal } from "./RsvpModal";
 
 interface HeroSectionProps {
   onScrollTo: (id: string) => void;
@@ -155,7 +156,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
         >
           <div className="text-center px-4 w-full sm:w-auto">
             <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Time</p>
-            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>6:00 PM onwards</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>5:30 PM onwards</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
           <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
@@ -196,23 +197,26 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           >
             View Gallery
           </button>
-          <button
-            onClick={() => onScrollTo("location")}
-            className="px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
-            style={{
-              background: "transparent",
-              color: "#ffffff",
-              fontFamily: "'Raleway', sans-serif",
-              letterSpacing: "0.15em",
-              fontSize: "0.8rem",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              border: "1px solid rgba(255,255,255,0.5)",
-              cursor: "pointer",
-            }}
-          >
-            Event Details
-          </button>
+          <RsvpModal 
+            trigger={
+              <button
+                className="px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "transparent",
+                  color: "#ffffff",
+                  fontFamily: "'Raleway', sans-serif",
+                  letterSpacing: "0.15em",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  border: "1px solid rgba(255,255,255,0.5)",
+                  cursor: "pointer",
+                }}
+              >
+                RSVP Now
+              </button>
+            }
+          />
         </motion.div>
 
         {/* Scroll indicator */}

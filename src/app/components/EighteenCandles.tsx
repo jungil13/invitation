@@ -102,6 +102,35 @@ export function EighteenCandles() {
           >
             Each flame lit by someone who wishes her a life filled with warmth, hope, and endless light.
           </p>
+
+          {/* Special Instruction Note */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-8 max-w-2xl mx-auto p-5 rounded-xl text-center"
+            style={{ 
+              background: "rgba(212, 175, 55, 0.1)", 
+              border: "1px solid rgba(212, 175, 55, 0.3)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Raleway', sans-serif",
+                fontSize: "1rem",
+                color: "#EAD5BA",
+                fontWeight: 400,
+                lineHeight: 1.6,
+              }}
+            >
+              <strong style={{ color: "#D4AF37", letterSpacing: "0.15em", display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase" }}>
+                ✦ Note for Candle Bearers ✦
+              </strong> 
+              Please prepare a handmade letter. Before the debutante blows her candles, you will place your letter inside the special box.
+            </p>
+          </motion.div>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
