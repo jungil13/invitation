@@ -83,7 +83,7 @@ export function RsvpModal({ trigger }: { trigger: React.ReactNode }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-[#3D1F2A] border border-[#D4AF37]/20 rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#D4AF37] transition-colors"
-                placeholder="Juan Dela Cruz"
+                placeholder="Enter Your Full Name"
                 required
               />
             </div>
