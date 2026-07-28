@@ -162,6 +162,26 @@ CREATE POLICY "Anyone can update app_settings" ON app_settings
 -- =============================================
 -- Storage Bucket for Gallery Photos
 -- =============================================
--- NOTE: Run this separately in Supabase Dashboard > Storage > New Bucket
--- Bucket name: "gallery"
--- Make it PUBLIC so images are accessible without auth
+-- Create the bucket if it doesn't exist
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('gallery', 'gallery', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Enable RLS for storage.objects
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to the gallery bucket
+CREATE POLICY "Public Access" ON storage.objects
+  FOR SELECT USING (bucket_id = 'gallery');
+
+-- Allow anonymous uploads to the gallery bucket
+CREATE POLICY "Anon Uploads" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'gallery');
+
+-- Allow anonymous updates to the gallery bucket
+CREATE POLICY "Anon Updates" ON storage.objects
+  FOR UPDATE USING (bucket_id = 'gallery');
+
+-- Allow anonymous deletes from the gallery bucket
+CREATE POLICY "Anon Deletes" ON storage.objects
+  FOR DELETE USING (bucket_id = 'gallery');

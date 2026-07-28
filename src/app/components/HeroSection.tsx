@@ -156,7 +156,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
         >
           <div className="text-center px-4 w-full sm:w-auto">
             <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Time</p>
-            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>5:30 PM onwards</p>
+            <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>4:00 PM onwards</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
           <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />

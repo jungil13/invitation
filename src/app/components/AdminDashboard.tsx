@@ -293,7 +293,7 @@ function GalleryTab() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const path = `gallery/${Date.now()}-${file.name}`;
+    const path = `${Date.now()}-${file.name}`;
     const { error } = await supabase.storage.from("gallery").upload(path, file);
     if (!error) {
       const { data: { publicUrl } } = supabase.storage.from("gallery").getPublicUrl(path);
