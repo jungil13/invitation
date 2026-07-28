@@ -8,8 +8,8 @@ import {
 const ADMIN_PASSWORD = "admin123";
 
 // ─── Shared styles ────────────────────────────────────────────────
-const gold = "#D4AF37";
-const dark = "#1A0A10";
+const gold = "#FFD700";
+const dark = "#0B0818";
 const card = "rgba(255,255,255,0.05)";
 const border = "rgba(212,175,55,0.25)";
 
@@ -70,7 +70,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center"
-      style={{ background: "linear-gradient(135deg, #1A0A10 0%, #3D1F2A 100%)" }}>
+      style={{ background: "linear-gradient(135deg, #0B0818 0%, #241846 100%)" }}>
       <div className="p-10 rounded-3xl w-full max-w-sm" style={{ background: card, border: `1px solid ${border}`, backdropFilter: "blur(20px)" }}>
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
@@ -471,7 +471,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
   if (!authed) return <LoginScreen onLogin={() => setAuthed(true)} />;
 
   return (
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #1A0A10 0%, #2A1015 100%)", fontFamily: "'Raleway', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #0B0818 0%, #2A1015 100%)", fontFamily: "'Raleway', sans-serif" }}>
       {/* Header */}
       <div className="sticky top-0 z-30 px-6 py-4 flex items-center justify-between"
         style={{ background: "rgba(26,10,16,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${border}` }}>

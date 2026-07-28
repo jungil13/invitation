@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import glizLandscape from "../../assets/images/gliz-landscape1.png";
 import glizPortrait from "../../assets/images/gliz-portrait.png";
-import { FloatingPetals } from "./FloatingPetals";
+import { FloatingLanterns } from "./FloatingLanterns";
 import { RsvpModal } from "./RsvpModal";
 
 interface HeroSectionProps {
@@ -14,7 +14,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #3D1F2A 0%, #6B2D40 30%, #B76E79 60%, #F4A7B9 100%)",
+        background: "linear-gradient(160deg, #06030F 0%, #0B0818 35%, #150E30 65%, #0A0520 100%)",
       }}
     >
       {/* Background image overlay */}
@@ -31,16 +31,25 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
     style={{ backgroundImage: `url(${glizPortrait})`, opacity: 0.8 }}
   />
 </div>
-      <FloatingPetals />
+      <FloatingLanterns />
 
-      {/* Decorative circles */}
+      {/* Aurora/lantern glow overlays */}
       <div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, #D4AF37, transparent)" }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 70% 50% at 50% 80%, rgba(255,165,0,0.12) 0%, transparent 70%)" }}
       />
       <div
-        className="absolute bottom-20 right-10 w-80 h-80 rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, #F9D4DC, transparent)" }}
+        className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 100% 80% at 50% 0%, rgba(80,40,180,0.2) 0%, transparent 70%)" }}
+      />
+      {/* Top lantern glow */}
+      <div
+        className="absolute top-16 left-1/4 w-96 h-96 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(255,215,0,0.07), transparent)", filter: "blur(40px)" }}
+      />
+      <div
+        className="absolute bottom-10 right-1/4 w-72 h-72 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(255,140,0,0.07), transparent)", filter: "blur(30px)" }}
       />
 
       <div className="relative z-20 text-center px-4 md:px-6 w-full max-w-4xl mx-auto py-10">
@@ -50,7 +59,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase mb-6 sm:mb-4"
-          style={{ color: "#D4AF37", fontFamily: "'Raleway', sans-serif", fontWeight: 300 }}
+          style={{ color: "#FFD700", fontFamily: "'Raleway', sans-serif", fontWeight: 300 }}
         >
           — You Are Invited —
         </motion.p>
@@ -66,7 +75,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
             fontSize: "clamp(3.5rem, 15vw, 9rem)",
             color: "#ffffff",
             lineHeight: 1.1,
-            textShadow: "0 2px 20px rgba(212, 175, 55, 0.4)",
+            textShadow: "0 0 60px rgba(255,215,0,0.5), 0 2px 20px rgba(255,165,0,0.3)",
             paddingBottom: "0.5rem"
           }}
         >
@@ -99,7 +108,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontSize: "clamp(1.75rem, 6vw, 3.5rem)",
-                color: "#D4AF37",
+                color: "#FFD700",
                 fontWeight: 700,
                 lineHeight: 1,
               }}
@@ -124,7 +133,7 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
             style={{
               fontFamily: "'Raleway', sans-serif",
               fontSize: "clamp(0.8rem, 2vw, 1rem)",
-              color: "#F4A7B9",
+              color: "#FFE066",
               letterSpacing: "0.15em",
               fontWeight: 300,
               lineHeight: 1.6,
@@ -141,9 +150,9 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           transition={{ duration: 1.2, delay: 1 }}
           className="flex items-center justify-center gap-3 mb-8"
         >
-          <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "80px" }} />
-          <span style={{ color: "#D4AF37", fontSize: "1.2rem" }}>✦</span>
-          <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "80px" }} />
+          <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "80px" }} />
+          <span style={{ color: "#FFD700", fontSize: "1.2rem" }}>✦</span>
+          <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "80px" }} />
         </motion.div>
 
         {/* Event details */}
@@ -155,19 +164,19 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
           style={{ fontFamily: "'Raleway', sans-serif", color: "#ffffff" }}
         >
           <div className="text-center px-4 w-full sm:w-auto">
-            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Time</p>
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#FFD700", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Time</p>
             <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>4:00 PM onwards</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
           <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
           <div className="text-center px-4 w-full sm:w-auto">
-            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Venue</p>
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#FFD700", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Venue</p>
             <p style={{ fontSize: "0.95rem", fontWeight: 300, lineHeight: 1.5 }}>1101 Victorio Pacaldo Sr. St,<br /> Cordova, 6017 Cebu</p>
           </div>
           <div style={{ width: "1px", height: "40px", background: "rgba(212,175,55,0.4)" }} className="hidden sm:block" />
           <div style={{ width: "100px", height: "1px", background: "rgba(212,175,55,0.2)" }} className="block sm:hidden my-2" />
           <div className="text-center px-4 w-full sm:w-auto">
-            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#D4AF37", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Attire</p>
+            <p style={{ fontSize: "0.75rem", letterSpacing: "0.25em", color: "#FFD700", fontWeight: 600, textTransform: "uppercase", marginBottom: "0.25rem" }}>Attire</p>
             <p style={{ fontSize: "0.95rem", fontWeight: 300 }}>Warm neutrals</p>
           </div>
         </motion.div>
@@ -183,8 +192,8 @@ export function HeroSection({ onScrollTo }: HeroSectionProps) {
             onClick={() => onScrollTo("gallery")}
             className="px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
             style={{
-              background: "linear-gradient(135deg, #D4AF37, #B8960C)",
-              color: "#3D1F2A",
+              background: "linear-gradient(135deg, #FFD700, #B8960C)",
+              color: "#241846",
               fontFamily: "'Raleway', sans-serif",
               letterSpacing: "0.15em",
               fontSize: "0.8rem",

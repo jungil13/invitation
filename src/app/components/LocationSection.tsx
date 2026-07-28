@@ -28,7 +28,7 @@ export function LocationSection() {
     <section
       id="location"
       className="py-24 px-6 relative overflow-hidden"
-      style={{ background: "linear-gradient(135deg, #4A2810 0%, #9B5D22 50%, #D4AF37 100%)" }}
+      style={{ background: "linear-gradient(135deg, #4A2810 0%, #9B5D22 50%, #FFD700 100%)" }}
     >
       {/* Decorative elements */}
       <div

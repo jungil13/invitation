@@ -75,9 +75,9 @@ export default function App() {
         <nav
           className="hidden md:flex fixed top-0 left-0 right-0 z-40 items-center justify-center px-6 py-3 gap-1 sm:gap-2"
           style={{
-            background: "rgba(61, 31, 42, 0.85)",
+            background: "rgba(10, 5, 32, 0.88)",
             backdropFilter: "blur(12px)",
-            borderBottom: "1px solid rgba(212, 175, 55, 0.15)",
+            borderBottom: "1px solid rgba(255,215,0, 0.12)",
           }}
         >
           <div
@@ -93,7 +93,7 @@ export default function App() {
                   fontFamily: "'Raleway', sans-serif",
                   fontSize: "0.7rem",
                   letterSpacing: "0.12em",
-                  color: activeSection === item.id ? "#D4AF37" : "rgba(255,255,255,0.75)",
+                  color: activeSection === item.id ? "#FFD700" : "rgba(255,255,255,0.75)",
                   fontWeight: activeSection === item.id ? 700 : 500,
                   textTransform: "uppercase",
                   border: "none",
@@ -121,9 +121,9 @@ export default function App() {
         <nav
           className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around"
           style={{
-            background: "rgba(26, 10, 16, 0.97)",
+            background: "rgba(6, 3, 15, 0.97)",
             backdropFilter: "blur(20px)",
-            borderTop: "1px solid rgba(212, 175, 55, 0.2)",
+            borderTop: "1px solid rgba(255,215,0, 0.12)",
             paddingBottom: "env(safe-area-inset-bottom, 0.5rem)",
             paddingTop: "0.5rem",
           }}
@@ -139,7 +139,7 @@ export default function App() {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: isActive ? "#D4AF37" : "rgba(255,255,255,0.4)",
+                  color: isActive ? "#FFD700" : "rgba(255,255,255,0.4)",
                   minWidth: "2.5rem",
                 }}
               >
@@ -159,7 +159,7 @@ export default function App() {
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
                     fontWeight: isActive ? 700 : 400,
-                    color: isActive ? "#D4AF37" : "rgba(255,255,255,0.4)",
+                    color: isActive ? "#FFD700" : "rgba(255,255,255,0.4)",
                   }}
                 >
                   {item.label}

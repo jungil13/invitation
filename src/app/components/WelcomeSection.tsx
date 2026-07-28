@@ -20,7 +20,7 @@ export function WelcomeSection() {
               fontFamily: "'Raleway', sans-serif",
               fontSize: "0.75rem",
               letterSpacing: "0.35em",
-              color: "#B76E79",
+              color: "#FFA500",
               fontWeight: 600,
               textTransform: "uppercase",
               marginBottom: "1rem",
@@ -33,7 +33,7 @@ export function WelcomeSection() {
             style={{
               fontFamily: "'Great Vibes', cursive",
               fontSize: "clamp(3rem, 8vw, 5rem)",
-              color: "#B76E79",
+              color: "#FFA500",
               lineHeight: 1.2,
               marginBottom: "0.5rem",
             }}
@@ -44,9 +44,9 @@ export function WelcomeSection() {
           <div
             className="flex items-center justify-center gap-3 my-6"
           >
-            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "60px" }} />
-            <span style={{ color: "#D4AF37", fontSize: "1rem" }}>✦</span>
-            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "60px" }} />
+            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "60px" }} />
+            <span style={{ color: "#FFD700", fontSize: "1rem" }}>✦</span>
+            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "60px" }} />
           </div>
 
           <p
@@ -64,7 +64,7 @@ export function WelcomeSection() {
               style={{
                 fontFamily: "'Great Vibes', cursive",
                 fontSize: "1.8em",
-                color: "#B76E79",
+                color: "#FFA500",
               }}
             >
               Glizlen
@@ -102,7 +102,7 @@ export function WelcomeSection() {
               style={{
                 fontFamily: "'Great Vibes', cursive",
                 fontSize: "2.5rem",
-                color: "#D4AF37",
+                color: "#FFD700",
               }}
             >
               The Casquejo Family

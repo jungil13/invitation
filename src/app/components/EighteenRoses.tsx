@@ -52,7 +52,7 @@ export function EighteenRoses() {
               fontFamily: "'Raleway', sans-serif",
               fontSize: "0.75rem",
               letterSpacing: "0.35em",
-              color: "#B76E79",
+              color: "#FFA500",
               fontWeight: 600,
               textTransform: "uppercase",
               marginBottom: "1rem",
@@ -64,16 +64,16 @@ export function EighteenRoses() {
             style={{
               fontFamily: "'Great Vibes', cursive",
               fontSize: "clamp(3rem, 8vw, 5rem)",
-              color: "#B76E79",
+              color: "#FFA500",
               lineHeight: 1.2,
             }}
           >
             18 Roses
           </h2>
           <div className="flex items-center justify-center gap-3 mt-4">
-            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "60px" }} />
-            <span style={{ color: "#D4AF37" }}>✦</span>
-            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "60px" }} />
+            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "60px" }} />
+            <span style={{ color: "#FFD700" }}>✦</span>
+            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "60px" }} />
           </div>
           <p
             style={{
@@ -110,7 +110,7 @@ export function EighteenRoses() {
               <div
                 className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #B76E79, #D4AF37)",
+                  background: "linear-gradient(135deg, #FFA500, #FFD700)",
                   color: "#ffffff",
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "0.8rem",
@@ -121,13 +121,13 @@ export function EighteenRoses() {
               </div>
 
               {/* Rose icon */}
-              <Flower2 className="text-[#B76E79] mb-3" size={32} />
+              <Flower2 className="text-[#FFA500] mb-3" size={32} />
 
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "1.1rem",
-                  color: "#3D1F2A",
+                  color: "#241846",
                   fontWeight: 600,
                   marginBottom: "0.2rem",
                 }}
@@ -138,7 +138,7 @@ export function EighteenRoses() {
                 style={{
                   fontFamily: "'Raleway', sans-serif",
                   fontSize: "0.75rem",
-                  color: "#B76E79",
+                  color: "#FFA500",
                   letterSpacing: "0.15em",
                   fontWeight: 600,
                   textTransform: "uppercase",
@@ -163,7 +163,7 @@ export function EighteenRoses() {
               {/* Hover accent */}
               <div
                 className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500"
-                style={{ background: "linear-gradient(to right, #B76E79, #D4AF37)" }}
+                style={{ background: "linear-gradient(to right, #FFA500, #FFD700)" }}
               />
             </motion.div>
           ))}

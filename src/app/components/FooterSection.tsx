@@ -12,7 +12,7 @@ export function FooterSection({ onAdminClick }: { onAdminClick?: () => void }) {
   };
   return (
     <footer
-      style={{ background: "linear-gradient(135deg, #3D1F2A 0%, #2A1015 100%)" }}
+      style={{ background: "linear-gradient(135deg, #241846 0%, #2A1015 100%)" }}
       className="py-16 px-6 text-center"
     >
       <motion.div
@@ -23,9 +23,9 @@ export function FooterSection({ onAdminClick }: { onAdminClick?: () => void }) {
       >
         {/* Icons */}
         <div className="flex justify-center gap-4 mb-6">
-          <Flower2 size={24} className="text-[#B76E79]" />
-          <Flame size={24} className="text-[#D4AF37]" />
-          <Gift size={24} className="text-[#D4AF37]" />
+          <Flower2 size={24} className="text-[#FFA500]" />
+          <Flame size={24} className="text-[#FFD700]" />
+          <Gift size={24} className="text-[#FFD700]" />
         </div>
 
         <h2
@@ -41,27 +41,27 @@ export function FooterSection({ onAdminClick }: { onAdminClick?: () => void }) {
         </h2>
 
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "50px" }} />
+          <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "50px" }} />
           <span
             style={{
               fontFamily: "'Raleway', sans-serif",
               fontSize: "0.75rem",
               letterSpacing: "0.35em",
-              color: "#D4AF37",
+              color: "#FFD700",
               fontWeight: 600,
               textTransform: "uppercase",
             }}
           >
             Turns 18
           </span>
-          <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "50px" }} />
+          <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "50px" }} />
         </div>
 
         <p
           style={{
             fontFamily: "'Raleway', sans-serif",
             fontSize: "1rem",
-            color: "#D4AF37",
+            color: "#FFD700",
             letterSpacing: "0.2em",
             fontWeight: 400,
             marginBottom: "1.5rem",
@@ -74,7 +74,7 @@ export function FooterSection({ onAdminClick }: { onAdminClick?: () => void }) {
           style={{
             fontFamily: "'Raleway', sans-serif",
             fontSize: "0.9rem",
-            color: "#F4A7B9",
+            color: "#FFE066",
             fontWeight: 300,
             lineHeight: 1.7,
             maxWidth: "500px",
@@ -97,7 +97,7 @@ export function FooterSection({ onAdminClick }: { onAdminClick?: () => void }) {
           <span>·</span>
           <span>Datag Cordova Cebu</span>
           <span>·</span>
-          <span className="flex items-center gap-1">With Love <Heart size={14} className="text-[#F4A7B9]" /></span>
+          <span className="flex items-center gap-1">With Love <Heart size={14} className="text-[#FFE066]" /></span>
         </div>
 
         <div className="mt-8 text-xs" style={{ color: "rgba(255,255,255,0.15)", fontFamily: "'Raleway', sans-serif", cursor: "default", userSelect: "none" }}

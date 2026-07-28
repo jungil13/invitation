@@ -25,7 +25,7 @@ const DEFAULT_TREASURES = [
 ];
 
 const categoryColors: Record<string, { bg: string; accent: string; text: string }> = {
-  default: { bg: "rgba(212, 175, 55, 0.08)", accent: "#D4AF37", text: "#D4AF37" },
+  default: { bg: "rgba(212, 175, 55, 0.08)", accent: "#FFD700", text: "#FFD700" },
 };
 
 export function EighteenTreasures() {
@@ -59,7 +59,7 @@ export function EighteenTreasures() {
               fontFamily: "'Raleway', sans-serif",
               fontSize: "0.75rem",
               letterSpacing: "0.35em",
-              color: "#B76E79",
+              color: "#FFA500",
               fontWeight: 600,
               textTransform: "uppercase",
               marginBottom: "1rem",
@@ -71,16 +71,16 @@ export function EighteenTreasures() {
             style={{
               fontFamily: "'Great Vibes', cursive",
               fontSize: "clamp(3rem, 8vw, 5rem)",
-              color: "#B76E79",
+              color: "#FFA500",
               lineHeight: 1.2,
             }}
           >
             18 Treasures
           </h2>
           <div className="flex items-center justify-center gap-3 mt-4">
-            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "60px" }} />
-            <span style={{ color: "#D4AF37" }}>✦</span>
-            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "60px" }} />
+            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "60px" }} />
+            <span style={{ color: "#FFD700" }}>✦</span>
+            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "60px" }} />
           </div>
           <p
             style={{
@@ -117,7 +117,7 @@ export function EighteenTreasures() {
               <div
                 className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #D4AF37, #B8960C)",
+                  background: "linear-gradient(135deg, #FFD700, #B8960C)",
                   color: "#ffffff",
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "0.8rem",
@@ -128,13 +128,13 @@ export function EighteenTreasures() {
               </div>
 
               {/* Gift icon */}
-              <Gift className="text-[#D4AF37] mb-3" size={32} />
+              <Gift className="text-[#FFD700] mb-3" size={32} />
 
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "1rem",
-                  color: "#B76E79",
+                  color: "#FFA500",
                   fontWeight: 600,
                   marginBottom: "0.15rem",
                   fontStyle: "italic",
@@ -146,7 +146,7 @@ export function EighteenTreasures() {
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "1rem",
-                  color: "#3D1F2A",
+                  color: "#241846",
                   fontWeight: 500,
                   marginBottom: "0.2rem",
                 }}
@@ -157,7 +157,7 @@ export function EighteenTreasures() {
                 style={{
                   fontFamily: "'Raleway', sans-serif",
                   fontSize: "0.75rem",
-                  color: "#D4AF37",
+                  color: "#FFD700",
                   letterSpacing: "0.15em",
                   fontWeight: 600,
                   textTransform: "uppercase",
@@ -180,7 +180,7 @@ export function EighteenTreasures() {
 
               <div
                 className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500"
-                style={{ background: "linear-gradient(to right, #B76E79, #D4AF37)" }}
+                style={{ background: "linear-gradient(to right, #FFA500, #FFD700)" }}
               />
             </motion.div>
           ))}

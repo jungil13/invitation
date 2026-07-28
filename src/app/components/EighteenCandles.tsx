@@ -49,7 +49,7 @@ export function EighteenCandles() {
       />
       <div
         className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-10 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #D4AF37, transparent)" }}
+        style={{ background: "radial-gradient(circle, #FFD700, transparent)" }}
       />
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -65,7 +65,7 @@ export function EighteenCandles() {
               fontFamily: "'Raleway', sans-serif",
               fontSize: "0.75rem",
               letterSpacing: "0.35em",
-              color: "#D4AF37",
+              color: "#FFD700",
               fontWeight: 600,
               textTransform: "uppercase",
               marginBottom: "1rem",
@@ -84,9 +84,9 @@ export function EighteenCandles() {
             18 Candles
           </h2>
           <div className="flex items-center justify-center gap-3 mt-4">
-            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #D4AF37)", width: "60px" }} />
-            <span style={{ color: "#D4AF37" }}>✦</span>
-            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #D4AF37)", width: "60px" }} />
+            <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #FFD700)", width: "60px" }} />
+            <span style={{ color: "#FFD700" }}>✦</span>
+            <div style={{ height: "1px", background: "linear-gradient(to left, transparent, #FFD700)", width: "60px" }} />
           </div>
           <p
             style={{
@@ -120,12 +120,12 @@ export function EighteenCandles() {
               style={{
                 fontFamily: "'Raleway', sans-serif",
                 fontSize: "1rem",
-                color: "#EAD5BA",
+                color: "#ffffffff",
                 fontWeight: 400,
                 lineHeight: 1.6,
               }}
             >
-              <strong style={{ color: "#D4AF37", letterSpacing: "0.15em", display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase" }}>
+              <strong style={{ color: "#FFD700", letterSpacing: "0.15em", display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase" }}>
                 ✦ Note for Candle Bearers ✦
               </strong> 
               Please prepare a handmade letter. Before the debutante blows her candles, you will place your letter inside the special box.
@@ -151,7 +151,7 @@ export function EighteenCandles() {
               <div
                 className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #FFA040, #D4AF37)",
+                  background: "linear-gradient(135deg, #FFA040, #FFD700)",
                   color: "#2A1A10",
                   fontFamily: "'Playfair Display', serif",
                   fontSize: "0.8rem",
@@ -162,7 +162,7 @@ export function EighteenCandles() {
               </div>
 
               {/* Candle flicker icon */}
-              <Flame className="text-[#D4AF37] mb-3" size={32} />
+              <Flame className="text-[#FFD700] mb-3" size={32} />
 
               <p
                 style={{
@@ -179,7 +179,7 @@ export function EighteenCandles() {
                 style={{
                   fontFamily: "'Raleway', sans-serif",
                   fontSize: "0.75rem",
-                  color: "#D4AF37",
+                  color: "#FFD700",
                   letterSpacing: "0.15em",
                   fontWeight: 600,
                   textTransform: "uppercase",
@@ -210,7 +210,7 @@ export function EighteenCandles() {
               />
               <div
                 className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500"
-                style={{ background: "linear-gradient(to right, #FFA040, #D4AF37)" }}
+                style={{ background: "linear-gradient(to right, #FFA040, #FFD700)" }}
               />
             </motion.div>
           ))}

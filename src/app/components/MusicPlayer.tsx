@@ -101,7 +101,7 @@ export function MusicPlayer() {
               }`}
               style={{
                 background: "rgba(61,31,42,0.9)",
-                color: "#F4A7B9",
+                color: "#FFE066",
                 fontFamily: "'Raleway', sans-serif",
                 letterSpacing: "0.1em",
                 whiteSpace: "nowrap",
@@ -124,7 +124,7 @@ export function MusicPlayer() {
                 style={{
                   background: "rgba(61,31,42,0.9)",
                   border: "1px solid rgba(212,175,55,0.3)",
-                  color: "#D4AF37",
+                  color: "#FFD700",
                   cursor: "pointer",
                 }}
               >
@@ -138,7 +138,7 @@ export function MusicPlayer() {
               title={isPlaying ? "Pause music" : "Play background music"}
               className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
               style={{
-                background: "linear-gradient(135deg, #B76E79, #D4AF37)",
+                background: "linear-gradient(135deg, #FFA500, #FFD700)",
                 boxShadow: isPlaying
                   ? "0 0 0 0 rgba(183,110,121,0.4), 0 4px 20px rgba(183,110,121,0.5)"
                   : "0 4px 20px rgba(183,110,121,0.4)",
