@@ -117,6 +117,16 @@ INSERT INTO ceremony_members (category, position, name, relation, message, gift)
   ('treasures', 18, 'Ninang Grace',    'Godmother',     'The most powerful gift — a heart-full of prayers for your beautiful life ahead.',          'A Blessing & A Prayer')
 ON CONFLICT (category, position) DO NOTHING;
 
+-- 5. Music Playlist
+CREATE TABLE IF NOT EXISTS music_playlist (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  storage_path TEXT,
+  position INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- =============================================
 -- Row Level Security (RLS) Policies
 -- =============================================
@@ -126,6 +136,7 @@ ALTER TABLE rsvp_responses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ceremony_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gallery_photos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE music_playlist ENABLE ROW LEVEL SECURITY;
 
 -- Allow anyone to INSERT rsvp responses (guests submitting)
 CREATE POLICY "Anyone can submit RSVP" ON rsvp_responses
@@ -159,29 +170,58 @@ CREATE POLICY "Anyone can read app_settings" ON app_settings
 CREATE POLICY "Anyone can update app_settings" ON app_settings
   FOR UPDATE USING (true);
 
+-- Allow anyone to READ music_playlist
+CREATE POLICY "Anyone can read music_playlist" ON music_playlist
+  FOR SELECT USING (true);
+
+-- Allow anyone to manage music_playlist (admin)
+CREATE POLICY "Anyone can manage music_playlist" ON music_playlist
+  FOR ALL USING (true);
+
 -- =============================================
--- Storage Bucket for Gallery Photos
+-- Storage Bucket for Gallery Photos and Music
 -- =============================================
--- Create the bucket if it doesn't exist
+-- Create the gallery bucket if it doesn't exist
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('gallery', 'gallery', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Create the music bucket if it doesn't exist
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('music', 'music', true)
 ON CONFLICT (id) DO NOTHING;
 
 -- Enable RLS for storage.objects
 ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 
 -- Allow public read access to the gallery bucket
-CREATE POLICY "Public Access" ON storage.objects
+CREATE POLICY "Public Access Gallery" ON storage.objects
   FOR SELECT USING (bucket_id = 'gallery');
 
 -- Allow anonymous uploads to the gallery bucket
-CREATE POLICY "Anon Uploads" ON storage.objects
+CREATE POLICY "Anon Uploads Gallery" ON storage.objects
   FOR INSERT WITH CHECK (bucket_id = 'gallery');
 
 -- Allow anonymous updates to the gallery bucket
-CREATE POLICY "Anon Updates" ON storage.objects
+CREATE POLICY "Anon Updates Gallery" ON storage.objects
   FOR UPDATE USING (bucket_id = 'gallery');
 
 -- Allow anonymous deletes from the gallery bucket
-CREATE POLICY "Anon Deletes" ON storage.objects
+CREATE POLICY "Anon Deletes Gallery" ON storage.objects
   FOR DELETE USING (bucket_id = 'gallery');
+
+-- Allow public read access to the music bucket
+CREATE POLICY "Public Access Music" ON storage.objects
+  FOR SELECT USING (bucket_id = 'music');
+
+-- Allow anonymous uploads to the music bucket
+CREATE POLICY "Anon Uploads Music" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'music');
+
+-- Allow anonymous updates to the music bucket
+CREATE POLICY "Anon Updates Music" ON storage.objects
+  FOR UPDATE USING (bucket_id = 'music');
+
+-- Allow anonymous deletes from the music bucket
+CREATE POLICY "Anon Deletes Music" ON storage.objects
+  FOR DELETE USING (bucket_id = 'music');

@@ -39,3 +39,12 @@ export interface AppSetting {
   value: string;
   updated_at?: string;
 }
+
+export interface MusicTrack {
+  id: string;
+  title: string;
+  url: string;
+  storage_path?: string;
+  position: number;
+  created_at?: string;
+}

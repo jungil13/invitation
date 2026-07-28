@@ -370,50 +370,83 @@ function GalleryTab() {
 }
 
 // ─── Music/Settings Tab ───────────────────────────────────────────
-function SettingsTab() {
-  const [musicUrl, setMusicUrl] = useState("");
+function MusicTab() {
+  const [tracks, setTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {
-    supabase.from("app_settings").select("value").eq("key", "music_url").single()
-      .then(({ data }) => { if (data) setMusicUrl(data.value); setLoading(false); });
-  }, []);
+  const load = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("music_playlist").select("*").order("position");
+    setTracks(data || []);
+    setLoading(false);
+  };
 
-  const save = async () => {
-    setSaving(true);
-    await supabase.from("app_settings").update({ value: musicUrl }).eq("key", "music_url");
-    setSaving(false); setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  useEffect(() => { load(); }, []);
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const path = `${Date.now()}-${file.name}`;
+    const { error } = await supabase.storage.from("music").upload(path, file);
+    if (!error) {
+      const { data: { publicUrl } } = supabase.storage.from("music").getPublicUrl(path);
+      await supabase.from("music_playlist").insert({ url: publicUrl, title: file.name, storage_path: path, position: tracks.length });
+      await load();
+    }
+    setUploading(false);
+    e.target.value = "";
+  };
+
+  const remove = async (track: any) => {
+    if (track.storage_path) {
+      await supabase.storage.from("music").remove([track.storage_path]);
+    }
+    await supabase.from("music_playlist").delete().eq("id", track.id);
+    setTracks(prev => prev.filter(t => t.id !== track.id));
   };
 
   return (
     <div className="p-6 rounded-2xl" style={{ background: card, border: `1px solid ${border}` }}>
       <div className="flex items-center gap-3 mb-6">
         <Music size={20} color={gold} />
-        <h3 style={{ fontFamily: "'Raleway', sans-serif", fontSize: "1rem", color: "#fff", fontWeight: 600 }}>Background Music</h3>
+        <h3 style={{ fontFamily: "'Raleway', sans-serif", fontSize: "1rem", color: "#fff", fontWeight: 600 }}>Music Playlist</h3>
       </div>
-      <p style={{ fontFamily: "'Raleway', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", marginBottom: "1rem", lineHeight: 1.6 }}>
-        Enter a direct link to an MP3 or audio file. Works with public links from Dropbox, Google Drive (direct links), SoundCloud (CDN), or Wikimedia Commons.
-      </p>
+      
+      <div className="mb-6">
+        <h3 style={{ fontFamily: "'Raleway', sans-serif", fontSize: "0.8rem", color: gold, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Upload MP3</h3>
+        <p style={{ fontFamily: "'Raleway', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", marginBottom: "0.75rem" }}>
+          Upload MP3 files to create your playlist.
+        </p>
+        <label style={{ ...btnPrimary, display: "inline-flex", cursor: "pointer", width: "fit-content" }}>
+          <Upload size={14} />
+          {uploading ? "Uploading…" : "Choose MP3 File"}
+          <input type="file" accept="audio/mpeg, audio/mp3" style={{ display: "none" }} onChange={uploadFile} disabled={uploading} />
+        </label>
+      </div>
+
       {loading ? (
         <p style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Raleway', sans-serif" }}>Loading…</p>
       ) : (
-        <>
-          <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: "0.7rem", color: gold, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Music URL (MP3 or OGG)</label>
-          <input style={{ ...inputStyle, marginBottom: "1rem" }} value={musicUrl} onChange={e => setMusicUrl(e.target.value)} placeholder="https://..." />
-          <button onClick={save} style={btnPrimary} disabled={saving}>
-            {saving ? <RefreshCw size={14} className="animate-spin" /> : <Save size={14} />}
-            {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Music URL"}
-          </button>
-          {musicUrl && (
-            <div className="mt-4">
-              <p style={{ fontFamily: "'Raleway', sans-serif", fontSize: "0.75rem", color: "rgba(255,255,255,0.4)", marginBottom: "0.5rem" }}>Preview:</p>
-              <audio controls src={musicUrl} style={{ width: "100%", borderRadius: "0.5rem" }} />
+        <div className="flex flex-col gap-3">
+          {tracks.map((t, idx) => (
+            <div key={t.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${border}` }}>
+              <div className="text-white/50 text-xs w-4">{idx + 1}.</div>
+              <div className="flex-1 min-w-0">
+                <p style={{ fontFamily: "'Raleway', sans-serif", color: "#fff", fontSize: "0.9rem", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {t.title}
+                </p>
+              </div>
+              <button onClick={() => remove(t)} style={btnDanger} className="shrink-0">
+                <Trash2 size={14} /> Remove
+              </button>
             </div>
+          ))}
+          {tracks.length === 0 && (
+            <p style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Raleway', sans-serif", textAlign: "center" }}>No tracks added yet.</p>
           )}
-        </>
+        </div>
       )}
     </div>
   );
@@ -476,7 +509,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
           {activeTab === "candles" && <CeremonyTab category="candles" />}
           {activeTab === "treasures" && <CeremonyTab category="treasures" />}
           {activeTab === "gallery" && <GalleryTab />}
-          {activeTab === "settings" && <SettingsTab />}
+          {activeTab === "settings" && <MusicTab />}
         </div>
       </div>
     </div>
