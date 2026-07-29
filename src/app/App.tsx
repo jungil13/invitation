@@ -4,6 +4,7 @@ import { HeroSection } from "./components/HeroSection";
 import { WelcomeSection } from "./components/WelcomeSection";
 import { LocationSection } from "./components/LocationSection";
 import { GallerySection } from "./components/GallerySection";
+import { CotillionDance } from "./components/CotillionDance";
 import { EighteenRoses } from "./components/EighteenRoses";
 import { EighteenCandles } from "./components/EighteenCandles";
 import { EighteenTreasures } from "./components/EighteenTreasures";
@@ -12,17 +13,18 @@ import { MusicPlayer } from "./components/MusicPlayer";
 import { EnvelopeAnimation } from "./components/EnvelopeAnimation";
 import { AdminDashboard } from "./components/AdminDashboard";
 import {
-  Home, Heart, Image, MapPin, Flower2, Flame, Gift
+  Home, Heart, Image, MapPin, Sparkles, Flower2, Flame, Gift
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { id: "home",      label: "Home",       icon: <Home size={18} /> },
-  { id: "welcome",   label: "Welcome",    icon: <Heart size={18} /> },
-  { id: "gallery",   label: "Gallery",    icon: <Image size={18} /> },
-  { id: "location",  label: "Details",    icon: <MapPin size={18} /> },
-  { id: "roses",     label: "Roses",      icon: <Flower2 size={18} /> },
-  { id: "candles",   label: "Candles",    icon: <Flame size={18} /> },
-  { id: "treasures", label: "Treasures",  icon: <Gift size={18} /> },
+  { id: "home",      label: "Home",            icon: <Home size={18} /> },
+  { id: "welcome",   label: "Welcome",         icon: <Heart size={18} /> },
+  { id: "gallery",   label: "Gallery",         icon: <Image size={18} /> },
+  { id: "location",  label: "Details",         icon: <MapPin size={18} /> },
+  { id: "cotillion", label: "Cotillion Dance", icon: <Sparkles size={18} /> },
+  { id: "roses",     label: "Roses",           icon: <Flower2 size={18} /> },
+  { id: "candles",   label: "Candles",         icon: <Flame size={18} /> },
+  { id: "treasures", label: "Treasures",       icon: <Gift size={18} /> },
 ];
 
 function scrollTo(id: string) {
@@ -112,6 +114,7 @@ export default function App() {
         <WelcomeSection />
         <GallerySection />
         <LocationSection />
+        <CotillionDance />
         <EighteenRoses />
         <EighteenCandles />
         <EighteenTreasures />
@@ -119,13 +122,14 @@ export default function App() {
 
         {/* ── Mobile bottom navbar (shown only on mobile) ── */}
         <nav
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-start sm:justify-around overflow-x-auto px-2"
           style={{
             background: "rgba(6, 3, 15, 0.97)",
             backdropFilter: "blur(20px)",
             borderTop: "1px solid rgba(255,215,0, 0.12)",
             paddingBottom: "env(safe-area-inset-bottom, 0.5rem)",
             paddingTop: "0.5rem",
+            scrollbarWidth: "none",
           }}
         >
           {NAV_ITEMS.map((item) => {
@@ -134,13 +138,13 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-200"
+                className="flex flex-col items-center gap-0.5 px-2 py-1 transition-all duration-200 shrink-0"
                 style={{
                   background: "none",
                   border: "none",
                   cursor: "pointer",
                   color: isActive ? "#FFD700" : "rgba(255,255,255,0.4)",
-                  minWidth: "2.5rem",
+                  minWidth: "3.2rem",
                 }}
               >
                 <span
@@ -153,10 +157,11 @@ export default function App() {
                   {item.icon}
                 </span>
                 <span
+                  className="whitespace-nowrap"
                   style={{
                     fontFamily: "'Raleway', sans-serif",
                     fontSize: "0.55rem",
-                    letterSpacing: "0.08em",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
                     fontWeight: isActive ? 700 : 400,
                     color: isActive ? "#FFD700" : "rgba(255,255,255,0.4)",

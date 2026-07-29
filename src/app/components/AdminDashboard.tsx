@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase, CeremonyMember, GalleryPhoto, RsvpResponse } from "../../lib/supabase";
 import {
   Users, Flower2, Flame, Gift, Image, Music, LogOut, Save, Trash2,
-  CheckCircle, XCircle, Plus, RefreshCw, Settings, Eye, EyeOff, Upload, Link
+  CheckCircle, XCircle, Plus, RefreshCw, Settings, Eye, EyeOff, Upload, Link, Sparkles
 } from "lucide-react";
 
 const ADMIN_PASSWORD = "admin123";
@@ -452,11 +452,93 @@ function MusicTab() {
   );
 }
 
+// ─── Cotillion Tab ────────────────────────────────────────────────
+function CotillionTab() {
+  const [couples, setCouples] = useState<{ pair_number: number; gentleman: string; lady: string; id?: string }[]>([
+    { pair_number: 1, gentleman: "Crez Ninu Jayme Caballes", lady: "Glizlen Casquejo" },
+    { pair_number: 2, gentleman: "Aljess Casquejo", lady: "Pretsie Babatuan" },
+    { pair_number: 3, gentleman: "Stephen Barbadillo", lady: "Deah Bancale" },
+    { pair_number: 4, gentleman: "Jayden Kent Orbiso", lady: "Noren Albios" },
+    { pair_number: 5, gentleman: "Fritz Ivan Robles Laroda", lady: "Nicey Caballes Ybanez" },
+    { pair_number: 6, gentleman: "Kenneth Inoc", lady: "Lharrajen Larobis" },
+    { pair_number: 7, gentleman: "Darios Marquez", lady: "Lyanne Aledon" },
+    { pair_number: 8, gentleman: "Albert Ecat", lady: "Precious Nicole" },
+    { pair_number: 9, gentleman: "Joshua Ando", lady: "Loreen Jean Nacar" },
+  ]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("cotillion_couples").select("*").order("pair_number");
+    if (data && data.length > 0) {
+      setCouples(data);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const update = (pairNum: number, field: "gentleman" | "lady", value: string) => {
+    setCouples(prev => prev.map(c => c.pair_number === pairNum ? { ...c, [field]: value } : c));
+  };
+
+  const save = async (c: { pair_number: number; gentleman: string; lady: string; id?: string }) => {
+    setSaving(c.pair_number);
+    await supabase.from("cotillion_couples").upsert({
+      pair_number: c.pair_number,
+      gentleman: c.gentleman,
+      lady: c.lady,
+    }, { onConflict: "pair_number" });
+    setSaving(null);
+    setSaved(c.pair_number);
+    setTimeout(() => setSaved(null), 2000);
+  };
+
+  if (loading) return <p style={{ color: "rgba(255,255,255,0.4)", textAlign: "center", fontFamily: "'Raleway', sans-serif" }}>Loading…</p>;
+
+  return (
+    <div className="flex flex-col gap-4">
+      {couples.map((c) => (
+        <div key={c.pair_number} className="p-5 rounded-2xl" style={{ background: card, border: `1px solid ${border}` }}>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+              style={{ background: `linear-gradient(135deg, ${gold}, #B8960C)`, color: dark, fontFamily: "'Playfair Display', serif", fontSize: "0.75rem", fontWeight: 700 }}>
+              {c.pair_number}
+            </div>
+            <span style={{ fontFamily: "'Raleway', sans-serif", fontSize: "0.7rem", color: gold, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 600 }}>
+              Pair {c.pair_number} {c.pair_number === 1 ? "(Lead Couple - Debutante & Escort)" : ""}
+            </span>
+            {saved === c.pair_number && <span style={{ color: "#4ade80", fontSize: "0.75rem", fontFamily: "'Raleway', sans-serif", marginLeft: "auto" }}>✓ Saved!</span>}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: "0.7rem", color: gold, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Gentleman</label>
+              <input style={inputStyle} value={c.gentleman} onChange={e => update(c.pair_number, "gentleman", e.target.value)} />
+            </div>
+            <div>
+              <label style={{ display: "block", fontFamily: "'Raleway', sans-serif", fontSize: "0.7rem", color: gold, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Lady</label>
+              <input style={inputStyle} value={c.lady} onChange={e => update(c.pair_number, "lady", e.target.value)} />
+            </div>
+          </div>
+          <div className="mt-3 flex justify-end">
+            <button onClick={() => save(c)} style={btnPrimary} disabled={saving === c.pair_number}>
+              <Save size={14} /> {saving === c.pair_number ? "Saving…" : "Save Pair"}
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── Main Admin Dashboard ─────────────────────────────────────────
-type Tab = "rsvp" | "roses" | "candles" | "treasures" | "gallery" | "settings";
+type Tab = "rsvp" | "cotillion" | "roses" | "candles" | "treasures" | "gallery" | "settings";
 
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: "rsvp",      label: "RSVPs",     icon: <Users size={16} /> },
+  { id: "cotillion", label: "Cotillion", icon: <Sparkles size={16} /> },
   { id: "roses",     label: "Roses",     icon: <Flower2 size={16} /> },
   { id: "candles",   label: "Candles",   icon: <Flame size={16} /> },
   { id: "treasures", label: "Treasures", icon: <Gift size={16} /> },
@@ -505,6 +587,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
         {/* Tab content */}
         <div>
           {activeTab === "rsvp" && <RsvpTab />}
+          {activeTab === "cotillion" && <CotillionTab />}
           {activeTab === "roses" && <CeremonyTab category="roses" />}
           {activeTab === "candles" && <CeremonyTab category="candles" />}
           {activeTab === "treasures" && <CeremonyTab category="treasures" />}

@@ -35,7 +35,21 @@ CREATE TABLE IF NOT EXISTS gallery_photos (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. App Settings (key-value store)
+-- 4. Cotillion Couples
+CREATE TABLE IF NOT EXISTS cotillion_couples (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  pair_number INTEGER NOT NULL UNIQUE,
+  gentleman TEXT NOT NULL,
+  lady TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS for cotillion_couples
+ALTER TABLE cotillion_couples ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public Read Cotillion" ON cotillion_couples FOR SELECT USING (true);
+CREATE POLICY "Anon Write Cotillion" ON cotillion_couples FOR ALL USING (true);
+
+-- 5. App Settings (key-value store)
 CREATE TABLE IF NOT EXISTS app_settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,
@@ -116,6 +130,19 @@ INSERT INTO ceremony_members (category, position, name, relation, message, gift)
   ('treasures', 17, 'Ninong Tony',     'Godfather',     'An investment in your future, because your potential knows no limits.',                    'Educational Fund'),
   ('treasures', 18, 'Ninang Grace',    'Godmother',     'The most powerful gift — a heart-full of prayers for your beautiful life ahead.',          'A Blessing & A Prayer')
 ON CONFLICT (category, position) DO NOTHING;
+
+-- Default Cotillion Couples
+INSERT INTO cotillion_couples (pair_number, gentleman, lady) VALUES
+  (1, 'Crez Ninu Jayme Caballes', 'Glizlen Casquejo'),
+  (2, 'Aljess Casquejo', 'Pretsie Babatuan'),
+  (3, 'Stephen Barbadillo', 'Deah Bancale'),
+  (4, 'Jayden Kent Orbiso', 'Noren Albios'),
+  (5, 'Fritz Ivan Robles Laroda', 'Nicey Caballes Ybanez'),
+  (6, 'Kenneth Inoc', 'Lharrajen Larobis'),
+  (7, 'Darios Marquez', 'Lyanne Aledon'),
+  (8, 'Albert Ecat', 'Precious Nicole'),
+  (9, 'Joshua Ando', 'Loreen Jean Nacar')
+ON CONFLICT (pair_number) DO NOTHING;
 
 -- 5. Music Playlist
 CREATE TABLE IF NOT EXISTS music_playlist (

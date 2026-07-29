@@ -1,48 +1,31 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface EnvelopeAnimationProps {
   children: ReactNode;
 }
 
-// The real Tangled / Corona Sun emblem as an SVG
+// The real Tangled / Corona Sun emblem as an SVG - memoized static
 function TangledSunSeal({ glowing }: { glowing?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 100 100"
-      width="100%"
-      height="100%"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ filter: glowing ? "drop-shadow(0 0 8px #FFD700) drop-shadow(0 0 18px #FFA500)" : "none" }}
-    >
-      {/* Outer ring */}
-      <circle cx="50" cy="50" r="47" fill="none" stroke="#FFD700" strokeWidth="1.5" opacity="0.7" />
-      <circle cx="50" cy="50" r="43" fill="none" stroke="#FFD700" strokeWidth="0.5" opacity="0.4" />
-
-      {/* Sun rays — 8 long pointed rays */}
-      {Array.from({ length: 8 }).map((_, i) => {
+  const longRays = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
         const angle = (i * 360) / 8;
         const rad = (angle * Math.PI) / 180;
-        const x1 = 50 + Math.cos(rad) * 20;
-        const y1 = 50 + Math.sin(rad) * 20;
         const x2 = 50 + Math.cos(rad) * 44;
         const y2 = 50 + Math.sin(rad) * 44;
         const lx = 50 + Math.cos(rad - 0.28) * 22;
         const ly = 50 + Math.sin(rad - 0.28) * 22;
         const rx = 50 + Math.cos(rad + 0.28) * 22;
         const ry = 50 + Math.sin(rad + 0.28) * 22;
-        return (
-          <polygon
-            key={`long-${i}`}
-            points={`${lx},${ly} ${x2},${y2} ${rx},${ry}`}
-            fill="#FFD700"
-            opacity="0.95"
-          />
-        );
-      })}
+        return { key: i, points: `${lx},${ly} ${x2},${y2} ${rx},${ry}` };
+      }),
+    []
+  );
 
-      {/* Short rays between long rays */}
-      {Array.from({ length: 8 }).map((_, i) => {
+  const shortRays = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
         const angle = (i * 360) / 8 + 22.5;
         const rad = (angle * Math.PI) / 180;
         const x2 = 50 + Math.cos(rad) * 36;
@@ -51,87 +34,133 @@ function TangledSunSeal({ glowing }: { glowing?: boolean }) {
         const ly = 50 + Math.sin(rad - 0.22) * 22;
         const rx = 50 + Math.cos(rad + 0.22) * 22;
         const ry = 50 + Math.sin(rad + 0.22) * 22;
-        return (
-          <polygon
-            key={`short-${i}`}
-            points={`${lx},${ly} ${x2},${y2} ${rx},${ry}`}
-            fill="#FFA500"
-            opacity="0.85"
-          />
-        );
-      })}
+        return { key: i, points: `${lx},${ly} ${x2},${y2} ${rx},${ry}` };
+      }),
+    []
+  );
 
-      {/* Center sun face circle */}
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      width="100%"
+      height="100%"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ filter: glowing ? "drop-shadow(0 0 8px #FFD700) drop-shadow(0 0 18px #FFA500)" : "none" }}
+    >
+      <circle cx="50" cy="50" r="47" fill="none" stroke="#FFD700" strokeWidth="1.5" opacity="0.7" />
+      <circle cx="50" cy="50" r="43" fill="none" stroke="#FFD700" strokeWidth="0.5" opacity="0.4" />
+      {longRays.map((r) => (
+        <polygon key={`long-${r.key}`} points={r.points} fill="#FFD700" opacity="0.95" />
+      ))}
+      {shortRays.map((r) => (
+        <polygon key={`short-${r.key}`} points={r.points} fill="#FFA500" opacity="0.85" />
+      ))}
       <circle cx="50" cy="50" r="18" fill="#FFD700" />
       <circle cx="50" cy="50" r="15" fill="#FFA500" opacity="0.6" />
       <circle cx="50" cy="50" r="10" fill="#FFD700" />
-
-      {/* Sun face – eyes */}
       <ellipse cx="45" cy="48" rx="2" ry="2.5" fill="#241846" />
       <ellipse cx="55" cy="48" rx="2" ry="2.5" fill="#241846" />
-      {/* Sun face – smile */}
       <path d="M44 54 Q50 59 56 54" stroke="#241846" strokeWidth="1.5" fill="none" strokeLinecap="round" />
     </svg>
   );
 }
 
-// Star particle component
-function StarField() {
-  const stars = Array.from({ length: 80 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 2.5 + 0.5,
-    delay: Math.random() * 4,
-    duration: Math.random() * 3 + 2,
-  }));
+// GPU-accelerated canvas-based star + sparkle field — single draw call
+function ParticleCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    // Stars — static positions, only opacity twinkling
+    const stars = Array.from({ length: 60 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.2 + 0.3,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.015 + 0.005,
+    }));
+
+    // Sparkles — float upward
+    const sparkles = Array.from({ length: 10 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 5 + 3,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.4 + 0.2,
+      drift: (Math.random() - 0.5) * 0.3,
+    }));
+
+    let t = 0;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.016;
+
+      // Draw stars
+      for (const s of stars) {
+        const alpha = 0.15 + 0.6 * (0.5 + 0.5 * Math.sin(s.phase + t * s.speed * 60));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw sparkle stars (4-pointed)
+      for (const sp of sparkles) {
+        sp.y -= sp.speed;
+        sp.x += sp.drift;
+        if (sp.y < -20) {
+          sp.y = canvas.height + 10;
+          sp.x = Math.random() * canvas.width;
+        }
+        const alpha = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(sp.phase + t * 2));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = "#FFD700";
+        const s = sp.size;
+        const x = sp.x;
+        const y = sp.y;
+        ctx.beginPath();
+        ctx.moveTo(x, y - s);
+        ctx.lineTo(x + s * 0.3, y - s * 0.3);
+        ctx.lineTo(x + s, y);
+        ctx.lineTo(x + s * 0.3, y + s * 0.3);
+        ctx.lineTo(x, y + s);
+        ctx.lineTo(x - s * 0.3, y + s * 0.3);
+        ctx.lineTo(x - s, y);
+        ctx.lineTo(x - s * 0.3, y - s * 0.3);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      ctx.globalAlpha = 1;
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    rafRef.current = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {stars.map((s) => (
-        <motion.div
-          key={s.id}
-          className="absolute rounded-full bg-white"
-          style={{
-            left: `${s.x}%`,
-            top: `${s.y}%`,
-            width: s.size,
-            height: s.size,
-          }}
-          animate={{ opacity: [0.1, 1, 0.1], scale: [1, 1.5, 1] }}
-          transition={{ duration: s.duration, delay: s.delay, repeat: Infinity }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// Floating sparkle particles around the envelope
-function Sparkles() {
-  const particles = Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 120 - 10,
-    y: Math.random() * 120 - 10,
-    delay: Math.random() * 3,
-    duration: Math.random() * 2 + 1.5,
-    size: Math.random() * 6 + 4,
-  }));
-  return (
-    <>
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute pointer-events-none"
-          style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          animate={{ opacity: [0, 1, 0], y: [0, -20, -40], scale: [0.5, 1, 0] }}
-          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity }}
-        >
-          <svg width={p.size} height={p.size} viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5Z" fill="#FFD700" />
-          </svg>
-        </motion.div>
-      ))}
-    </>
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none"
+      style={{ willChange: "transform" }}
+    />
   );
 }
 
@@ -157,25 +186,25 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
             className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
             style={{ background: "linear-gradient(160deg, #06030F 0%, #0B0818 40%, #150E30 70%, #0A0520 100%)" }}
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1, transition: { duration: 1.2, ease: "easeInOut" } }}
+            exit={{ opacity: 0, scale: 1.05, transition: { duration: 0.9, ease: "easeInOut" } }}
           >
-            {/* Starfield background */}
-            <StarField />
+            {/* Single canvas handles all particles — far cheaper than 95 motion.divs */}
+            <ParticleCanvas />
 
-            {/* Radial aurora glow in background */}
+            {/* Radial aurora glow */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
-                background: "radial-gradient(ellipse 80% 60% at 50% 60%, rgba(100,50,200,0.18) 0%, transparent 70%)",
+                background: "radial-gradient(ellipse 80% 60% at 50% 60%, rgba(100,50,200,0.15) 0%, transparent 70%)",
               }}
             />
 
-            {/* Magical title above envelope */}
+            {/* Title */}
             <motion.div
               className="relative z-20 mb-8 text-center"
-              initial={{ opacity: 0, y: -30 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3 }}
+              transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
             >
               <p
                 style={{
@@ -207,9 +236,9 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
             {/* Envelope Wrapper */}
             <motion.div
               className="relative z-20"
-              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              initial={{ opacity: 0, y: 30, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
             >
               <div
                 className="relative cursor-pointer"
@@ -217,29 +246,22 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                   width: "clamp(280px, 80vw, 500px)",
                   aspectRatio: "4/3",
                   perspective: "1200px",
-                  filter: "drop-shadow(0 20px 60px rgba(100, 50, 200, 0.4))",
+                  filter: "drop-shadow(0 20px 50px rgba(100, 50, 200, 0.35))",
                 }}
                 onClick={handleOpen}
               >
-                {/* Sparkle particles */}
-                <div className="absolute inset-0 z-40 pointer-events-none overflow-visible">
-                  <Sparkles />
-                </div>
-
                 {/* === ENVELOPE BODY === */}
-                {/* Back of envelope */}
                 <div
                   className="absolute inset-0 rounded-lg overflow-hidden"
                   style={{
                     background: "linear-gradient(160deg, #2A1C5A 0%, #1D1040 100%)",
-                    boxShadow: "inset 0 0 40px rgba(100,60,200,0.3)",
+                    boxShadow: "inset 0 0 40px rgba(100,60,200,0.25)",
                   }}
                 >
-                  {/* Subtle inner glow */}
                   <div
                     className="absolute inset-0"
                     style={{
-                      background: "radial-gradient(ellipse at center, rgba(255,215,0,0.05) 0%, transparent 70%)",
+                      background: "radial-gradient(ellipse at center, rgba(255,215,0,0.04) 0%, transparent 70%)",
                     }}
                   />
                 </div>
@@ -254,10 +276,9 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                   }}
                   initial={{ y: 0 }}
                   animate={{ y: isOpen ? -70 : 0 }}
-                  transition={{ duration: 1.2, delay: 0.4, ease: "backOut" }}
+                  transition={{ duration: 1, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
                 >
                   <div className="w-full h-full flex flex-col items-center justify-start pt-8 px-8">
-                    {/* Sun emblem on letter */}
                     <div style={{ width: 40, height: 40, marginBottom: "0.75rem" }}>
                       <TangledSunSeal />
                     </div>
@@ -315,15 +336,16 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                   }}
                 />
 
-                {/* Top Flap (Animated – flips open) */}
+                {/* Top Flap (Animated) — GPU-only transform */}
                 <motion.div
                   className="absolute top-0 left-0 right-0 h-2/3 origin-top"
                   initial={{ rotateX: 0 }}
                   animate={{ rotateX: isOpen ? 185 : 0 }}
-                  transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                  transition={{ duration: 1.1, ease: [0.4, 0, 0.2, 1] }}
                   style={{
                     zIndex: isOpen ? 0 : 20,
                     transformStyle: "preserve-3d",
+                    willChange: "transform",
                   }}
                 >
                   {/* Front of top flap */}
@@ -336,7 +358,6 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                       boxShadow: "inset 0 -10px 30px rgba(0,0,0,0.3)",
                     }}
                   >
-                    {/* Decorative pattern on flap */}
                     <div
                       className="absolute inset-0"
                       style={{
@@ -363,73 +384,60 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                     className="absolute bottom-0 left-1/2"
                     style={{ transform: "translate(-50%, 50%)", zIndex: 30, pointerEvents: isOpen ? "none" : "auto" }}
                   >
-                    <motion.button
-                      className="relative flex items-center justify-center rounded-full cursor-pointer border-0 bg-transparent p-0"
+                    {/* CSS-based pulse ring — no Framer Motion for this continuous loop */}
+                    <div
+                      className="relative flex items-center justify-center rounded-full cursor-pointer"
                       style={{ width: 72, height: 72 }}
-                      whileHover={{ scale: 1.12 }}
-                      whileTap={{ scale: 0.93 }}
-                      animate={
-                        !isOpen
-                          ? {
-                              boxShadow: [
-                                "0 0 0px rgba(255,215,0,0)",
-                                "0 0 30px rgba(255,165,0,0.8)",
-                                "0 0 0px rgba(255,215,0,0)",
-                              ],
-                            }
-                          : {}
-                      }
-                      transition={
-                        !isOpen ? { duration: 2.5, repeat: Infinity } : { type: "spring", stiffness: 400, damping: 20 }
-                      }
                       onClick={(e) => {
                         e.stopPropagation();
                         handleOpen();
                       }}
                       aria-label="Open envelope"
                     >
-                      {/* Outer glow ring */}
-                      <motion.div
-                        className="absolute inset-0 rounded-full border border-yellow-400"
-                        animate={{ scale: [1, 1.3, 1], opacity: [0.6, 0, 0.6] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                      {/* Seal background circle */}
+                      {/* Pulse ring — pure CSS, no JS */}
+                      {!isOpen && (
+                        <span
+                          className="absolute inset-0 rounded-full border border-yellow-400"
+                          style={{ animation: "seal-pulse 2s ease-in-out infinite" }}
+                        />
+                      )}
+                      {/* Seal background */}
                       <div
                         className="absolute inset-0 rounded-full"
                         style={{
                           background: "radial-gradient(circle at 40% 35%, #FFEC6E 0%, #FFD700 40%, #FFA500 75%, #CC7700 100%)",
                           boxShadow: "0 4px 20px rgba(255,165,0,0.6), inset 0 2px 4px rgba(255,255,255,0.4)",
+                          transition: "transform 0.15s ease",
                         }}
                       />
                       {/* Sun emblem */}
                       <div className="relative z-10" style={{ width: 56, height: 56 }}>
                         <TangledSunSeal glowing />
                       </div>
-                    </motion.button>
+                    </div>
                   </div>
                 </motion.div>
 
-                {/* Golden border frame on envelope */}
+                {/* Golden border frame */}
                 <div
                   className="absolute inset-0 rounded-lg pointer-events-none z-30"
                   style={{
                     border: "1px solid rgba(255,215,0,0.25)",
-                    boxShadow: "inset 0 0 30px rgba(255,165,0,0.05), 0 0 50px rgba(100,60,200,0.3)",
+                    boxShadow: "inset 0 0 30px rgba(255,165,0,0.04), 0 0 40px rgba(100,60,200,0.25)",
                   }}
                 />
               </div>
             </motion.div>
 
-            {/* Animated instruction text */}
+            {/* Tap instruction — CSS blink, no Framer Motion loop */}
             {!isOpen && (
               <motion.div
                 className="relative z-20 mt-8 text-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1 }}
+                transition={{ duration: 0.8, delay: 1 }}
               >
-                <motion.p
+                <p
                   style={{
                     fontFamily: "'Raleway', sans-serif",
                     fontSize: "0.7rem",
@@ -437,25 +445,24 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
                     color: "#FFD700",
                     textTransform: "uppercase",
                     fontWeight: 400,
+                    animation: "text-blink 2.5s ease-in-out infinite",
                   }}
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 2.5, repeat: Infinity }}
                 >
                   ✦ Tap the sun seal to open ✦
-                </motion.p>
+                </p>
               </motion.div>
             )}
 
-            {/* Reveal phase overlay – golden burst */}
+            {/* Reveal burst — fires once, not looping */}
             <AnimatePresence>
               {phase === "revealing" && (
                 <motion.div
                   className="fixed inset-0 z-50 pointer-events-none"
                   style={{ background: "radial-gradient(circle at center, #FFD700 0%, #FFA500 30%, transparent 70%)" }}
                   initial={{ opacity: 0, scale: 0.2 }}
-                  animate={{ opacity: [0, 0.6, 0], scale: [0.2, 2.5, 4] }}
+                  animate={{ opacity: [0, 0.5, 0], scale: [0.2, 2.5, 4] }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  transition={{ duration: 1.1, ease: "easeOut" }}
                 />
               )}
             </AnimatePresence>
@@ -466,16 +473,25 @@ export function EnvelopeAnimation({ children }: EnvelopeAnimationProps) {
       {/* Main Website Content */}
       {showContent && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
         >
           {children}
         </motion.div>
       )}
+
+      {/* CSS keyframes injected once */}
+      <style>{`
+        @keyframes seal-pulse {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 0; transform: scale(1.35); }
+        }
+        @keyframes text-blink {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
+        }
+      `}</style>
     </>
   );
 }
-
-
-
