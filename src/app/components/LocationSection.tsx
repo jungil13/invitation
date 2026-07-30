@@ -87,8 +87,8 @@ export function LocationSection() {
             {
               icon: <Clock className="text-white mx-auto" size={32} />,
               label: "Time",
-              main: "6:00 PM",
-              sub: "Doors open at 5:30 PM",
+              main: "4:00 PM",
+              sub: "Doors open at 6:00 PM",
             },
             {
               icon: <MapPin className="text-white mx-auto" size={32} />,
